@@ -44,6 +44,28 @@ namespace librazerblade
     [StructLayout(LayoutKind.Sequential)]
     public struct LaptopState
     {
+        public bool Equals(LaptopState other)
+        {
+            return fanSpeed == other.fanSpeed && powerMode == other.powerMode && manualFanSpeed == other.manualFanSpeed && keyboardInfo.Equals(other.keyboardInfo);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is LaptopState other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = fanSpeed.GetHashCode();
+                hashCode = (hashCode * 397) ^ powerMode.GetHashCode();
+                hashCode = (hashCode * 397) ^ manualFanSpeed.GetHashCode();
+                hashCode = (hashCode * 397) ^ keyboardInfo.GetHashCode();
+                return hashCode;
+            }
+        }
+
         [StructLayout(LayoutKind.Explicit, Size = 280)]
         public struct Proxy
         {

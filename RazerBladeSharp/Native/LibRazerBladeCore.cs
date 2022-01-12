@@ -50,9 +50,24 @@ namespace librazerblade
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 3)]
-    public struct Rgb24
+    public readonly struct Rgb24
     {
-        public byte r, g, b;
+        public bool Equals(Rgb24 other)
+        {
+            return r == other.r && g == other.g && b == other.b;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Rgb24 other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return r | (g << 8) | (b << 16);
+        }
+
+        public readonly byte r, g, b;
 
         public Rgb24(byte r, byte g, byte b)
         {
@@ -65,6 +80,24 @@ namespace librazerblade
     [StructLayout(LayoutKind.Sequential)]
     public struct KeyboardRow
     {
+        public bool Equals(KeyboardRow other)
+        {
+            return rowid == other.rowid && IsKeysEquals(other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is KeyboardRow other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (rowid.GetHashCode() * 397) ^ (keys != null ? keys.GetHashCode() : 0);
+            }
+        }
+
         public byte rowid; // Row ID (0-5) used by the EC to update each row
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
@@ -75,12 +108,47 @@ namespace librazerblade
             this.rowid = rowId;
             keys = new Rgb24[15];
         }
+
+        public bool IsKeysEquals(KeyboardRow keyboardRow)
+        {
+            if (keys == keyboardRow.keys)
+                return true;
+
+            if (keys.Length != keyboardRow.keys.Length)
+                return false;
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!keys[i].Equals(keyboardRow.keys[i]))
+                    return false;
+            }
+
+            return true;
+        }
     };
 
     // Keyboard structs
     [StructLayout(LayoutKind.Sequential)]
     public struct KeyboardInfo
     {
+        public bool Equals(KeyboardInfo other)
+        {
+            return brightness == other.brightness && Equals(rows, other.rows);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is KeyboardInfo other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (brightness.GetHashCode() * 397) ^ (rows != null ? rows.GetHashCode() : 0);
+            }
+        }
+
         public byte brightness; // 0-255 brightness
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
