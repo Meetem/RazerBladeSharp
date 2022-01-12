@@ -27,29 +27,38 @@ namespace librazerblade
         {
             public LaptopDescription Struct => this.ToStruct<LaptopDescription, Proxy>();
         }
-        
+
         public UsbId id;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
         public string name;
+
         public LaptopFan fan;
-        
+
         [MarshalAs(UnmanagedType.I4)]
         public BladeCapabilities capabilities;
-        
+
         public IntPtr userData;
     };
 
     [StructLayout(LayoutKind.Sequential)]
     public struct LaptopState
     {
-        [StructLayout(LayoutKind.Explicit, Size = 279)]
+        [StructLayout(LayoutKind.Explicit, Size = 280)]
         public struct Proxy
         {
             public LaptopState Struct => this.ToStruct<LaptopState, Proxy>();
         }
-        
+
         public byte fanSpeed;
         public byte powerMode;
+        public byte manualFanSpeed;
         public KeyboardInfo keyboardInfo;
+
+        public bool IsManualFanSpeed
+        {
+            get => manualFanSpeed > 0;
+            set => manualFanSpeed = (byte)(value ? 1 : 0);
+        }
     };
 }

@@ -125,6 +125,9 @@ namespace librazerblade
         public static extern byte librazerblade_PacketUtil_getBrightness(ref RazerPacket pkt);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern byte librazerblade_PacketUtil_getManualFanSpeed(ref RazerPacket pkt);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern KeyboardRow librazerblade_PacketUtil_getRow(ref RazerPacket pkt);
 
         #endregion

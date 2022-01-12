@@ -45,7 +45,7 @@ namespace RazerBladeSharp
             //Get LaptopState object from Laptop* where all the data is stored
             var status = _laptop.GetState();
             Console.WriteLine(
-                $"Got Status:\n\tFanSpeed: {status.fanSpeed * 100}\n\tPowerMode: {status.powerMode}\n\tKeyboardBrightness: {status.keyboardInfo.brightness}");
+                $"Got Status:\n\tFanSpeed: {status.fanSpeed * 100}\n\tPowerMode: {status.powerMode}\n\tManualFanSpeed: {status.IsManualFanSpeed}\n\tKeyboardBrightness: {status.keyboardInfo.brightness}");
 
             /*
              * This effectively setting 5000RPM manually,
