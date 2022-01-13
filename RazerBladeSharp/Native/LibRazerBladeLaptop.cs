@@ -25,10 +25,10 @@ namespace librazerblade
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Size = 280)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Size = 288)]
     public struct LaptopDescription
     {
-        [StructLayout(LayoutKind.Explicit, Size = 280)]
+        [StructLayout(LayoutKind.Explicit, Size = 288)]
         public struct Proxy
         {
             public LaptopDescription Struct => this.ToStruct<LaptopDescription, Proxy>();
