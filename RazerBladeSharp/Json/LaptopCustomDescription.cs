@@ -34,7 +34,7 @@ namespace librazerblade.Json
                 throw new Exception("Fan.maxFanSpeed should be >= 0");
 
             if (Fan.maxFanSpeed <= Fan.minFanSpeed)
-                throw new Exception("Fan.maxFanSpeed should be >= Fan.minFanSpeed");
+                throw new Exception("Fan.maxFanSpeed should be > Fan.minFanSpeed");
 
             var data = new UserData();
             if (!string.IsNullOrEmpty(UserData))
