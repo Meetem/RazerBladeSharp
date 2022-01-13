@@ -21,7 +21,7 @@ namespace librazerblade.Json
             if (string.IsNullOrEmpty(Name))
                 throw new Exception("Name must not be null or empty");
 
-            var nBytes = Encoding.ASCII.GetBytes(Name.Trim());
+            var nBytes = Encoding.ASCII.GetBytes(Name.Trim() + "\0");
             var n = Encoding.ASCII.GetString(nBytes);
 
             if (nBytes.Length >= 256)
