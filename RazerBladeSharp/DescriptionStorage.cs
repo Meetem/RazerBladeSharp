@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
+using librazerblade.Json;
 
 namespace librazerblade
 {
@@ -45,6 +48,32 @@ namespace librazerblade
         public static IntPtr GetAllUnsafe(ref int count)
         {
             return LibRazerBladeNative.librazerblade_DescriptionStorage_getAll(ref count);
+        }
+
+        public static AggregateException Put(IEnumerable<LaptopCustomDescription> descriptions, Encoding userDataEncoding = null)
+        {
+            List<Exception> handled = new List<Exception>();
+            foreach (var description in descriptions)
+            {
+                try
+                {
+                    Put(description.GetStruct(userDataEncoding));
+                }
+                catch (Exception e)
+                {
+                    handled.Add(e);
+                }
+            }
+
+            if (handled.Count == 0)
+                return null;
+
+            return new AggregateException(handled);
+        }
+        
+        public static void Clear()
+        {
+            LibRazerBladeNative.librazerblade_DescriptionStorage_clear();
         }
     }
 }

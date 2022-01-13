@@ -239,6 +239,9 @@ namespace librazerblade
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern void librazerblade_DescriptionStorage_set(int idx, LaptopDescription description);
 
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern void librazerblade_DescriptionStorage_clear();
+
         #endregion
         
         #region Memory
