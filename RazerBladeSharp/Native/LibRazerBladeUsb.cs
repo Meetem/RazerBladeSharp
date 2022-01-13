@@ -28,6 +28,12 @@ namespace librazerblade
 
         public int Id => (int)((uint)vendorId | ((uint)productId << 16));
 
+        public UsbId(ushort vendorId, ushort productId)
+        {
+            this.vendorId = vendorId;
+            this.productId = productId;
+        }
+        
         public override string ToString()
         {
             return $"{vendorId:X4}:{productId:X4}";

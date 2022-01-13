@@ -240,5 +240,18 @@ namespace librazerblade
         public static extern void librazerblade_DescriptionStorage_set(int idx, LaptopDescription description);
 
         #endregion
+        
+        #region Memory
+        
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern IntPtr librazerblade_malloc(int numBytes);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern void librazerblade_malloc(IntPtr free);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern UserData librazerblade_UserData_fromMemory(IntPtr mem, int size, int autoFree);
+
+        #endregion
     }
 }

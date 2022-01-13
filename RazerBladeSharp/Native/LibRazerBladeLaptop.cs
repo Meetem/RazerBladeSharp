@@ -13,6 +13,12 @@ namespace librazerblade
         public int minFanSpeed;
         public int maxFanSpeed;
 
+        public LaptopFan(int min, int max)
+        {
+            minFanSpeed = min;
+            maxFanSpeed = max;
+        }
+        
         public override string ToString()
         {
             return $"Fan({minFanSpeed}, {maxFanSpeed})";
@@ -38,7 +44,7 @@ namespace librazerblade
         [MarshalAs(UnmanagedType.I4)]
         public BladeCapabilities capabilities;
 
-        public IntPtr userData;
+        public UserData userData;
     };
 
     [StructLayout(LayoutKind.Sequential)]

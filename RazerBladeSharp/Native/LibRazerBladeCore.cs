@@ -16,6 +16,46 @@ namespace librazerblade
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct UserData
+    {
+        public IntPtr ptr;
+        public int length;
+        public int autoFree;
+
+        public static UserData FromMemory(IntPtr data, int length, bool autoFree)
+        {
+            return LibRazerBladeNative.librazerblade_UserData_fromMemory(data, length, autoFree ? 1 : 0);
+        }
+
+        public static UserData FromMemory<T>(T[] array, bool autoFree, int offset = 0, int count = 0)
+            where T : unmanaged
+        {
+            if (array == null || count == 0)
+                return new UserData(IntPtr.Zero, 0, false);
+
+            if (offset >= array.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset), "offset >= array.length");
+            
+            if (count <= 0)
+                count = array.Length - offset;
+            
+            if (offset + count > array.Length)
+                throw new ArgumentOutOfRangeException(nameof(count), "offset + count exceeds array length");
+            
+            var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(array, offset);
+            return LibRazerBladeNative.librazerblade_UserData_fromMemory(ptr, count * Marshal.SizeOf<T>(),
+                autoFree ? 1 : 0);
+        }
+
+        public UserData(IntPtr data, int length, bool autoFree)
+        {
+            this.ptr = data;
+            this.length = length;
+            this.autoFree = autoFree ? 1 : 0;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct UsbHandle
     {
         public int autoRelease;
