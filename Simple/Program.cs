@@ -16,6 +16,18 @@ namespace RazerBladeSharp
             UsbInterface.Initialize();
             AppDomain.CurrentDomain.ProcessExit += OnExit;
 
+            int? fanSpeed = null;
+            if (args.Length > 0)
+            {
+                var t = args[0];
+                if (Int32.TryParse(t, out var fsParsed))
+                {
+                    fanSpeed = Math.Max(fsParsed, 0);
+                    if (fanSpeed == 0)
+                        fanSpeed = null;
+                }
+            }
+            
             while (true)
             {
                 _laptop = DetectLaptop();
@@ -51,18 +63,22 @@ namespace RazerBladeSharp
              * This effectively setting 5000RPM manually,
              * AND selecting Gaming power mode (0 - Balanced, 1 - Gaming, 2 - Creator (only supported on some laptops))
              */
-            Console.WriteLine("Setting 5000RPM and Gaming power mode");
-            _laptop.SetFanSpeed(5000);
-            _laptop.SetPowerMode(1, false);
+            Console.WriteLine($"Setting {fanSpeed}RPM and Gaming power mode");
+            
+            _laptop.SetFanSpeed(fanSpeed ?? 0);
+            _laptop.SetPowerMode(1, fanSpeed == null);
             
             Console.WriteLine("Setting Max Keyboard Brightness");
-            _laptop.SetBrightness(255);
+            _laptop.SetBrightness(32);
             
             Console.WriteLine("Set diagonal key colors");
             for (int i = 0; i < 6; i++)
             {
                 var row = new KeyboardRow((byte)i);
-                row.keys[i] = new Rgb24(255, 255, 255);
+                for (int j = 0; j < 15; j++)
+                    row.keys[j] = new Rgb24(30, 255, 30);
+                
+                //row.keys[i] = new Rgb24(255, 255, 255);
                 _laptop.SendKeyboardRow(row);
             }
 
