@@ -21,9 +21,9 @@
         }
 
         public static RazerPacket Fan(byte fanSpeedDiv100,
-            BladePacketDirection direction = BladePacketDirection.Set)
+            int fanId, BladePacketDirection direction = BladePacketDirection.Set)
         {
-            return LibRazerBladeNative.librazerblade_PacketFactory_fan(fanSpeedDiv100, direction).Struct;
+            return LibRazerBladeNative.librazerblade_PacketFactory_fan(fanSpeedDiv100, fanId, direction).Struct;
         }
 
         public static RazerPacket Power(byte powerMode, bool autoFanSpeed,

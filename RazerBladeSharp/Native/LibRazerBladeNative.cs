@@ -91,7 +91,7 @@ namespace librazerblade
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern RazerPacket.Proxy
-            librazerblade_PacketFactory_fan(byte fanSpeedDiv100,
+            librazerblade_PacketFactory_fan(byte fanSpeedDiv100, int fanId,
                 BladePacketDirection direction = BladePacketDirection.Set);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
@@ -190,7 +190,7 @@ namespace librazerblade
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern UsbPacketResult librazerblade_Laptop_setFanSpeed(LaptopPtr self, int speed,
-            int numRetries = 0);
+            int numRetries = 0, int fanId = 1, int clampSpeed = 1);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern UsbPacketResult

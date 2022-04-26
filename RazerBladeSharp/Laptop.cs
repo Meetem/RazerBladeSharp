@@ -83,9 +83,9 @@ namespace librazerblade
             return LibRazerBladeNative.librazerblade_Laptop_queryRows(ptr, query, numRetries);
         }
 
-        public UsbPacketResult SetFanSpeed(int speed, int numRetries = 0)
+        public UsbPacketResult SetFanSpeed(int speed, int numRetries = 0, int fanId = 1, bool clampSpeed = true)
         {
-            return LibRazerBladeNative.librazerblade_Laptop_setFanSpeed(ptr, speed, numRetries);
+            return LibRazerBladeNative.librazerblade_Laptop_setFanSpeed(ptr, speed, numRetries, fanId, clampSpeed ? 1 : 0);
         }
 
         public UsbPacketResult SetPowerMode(byte powerMode, bool autoFanSpeed, int numRetries = 0)
