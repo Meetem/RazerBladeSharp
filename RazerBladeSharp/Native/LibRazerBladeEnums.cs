@@ -18,6 +18,7 @@ namespace librazerblade
         QueryFanSpeed = 0b00000001,
         QueryPowerMode = 0b00000010,
         QueryBrightness = 0b00000100,
+        QueryBoost = 0b00001000,
         QueryAll = 0x7FFFFFFF,
         QueryCount = 3,
     };
@@ -47,6 +48,12 @@ namespace librazerblade
         RazerResponseDoesntMatch = 0xFF
     };
 
+    public enum BladeBoostId : int
+    {
+        Cpu = 0x01,
+        Gpu = 0x02
+    };
+
     public enum BladePacketDirection : int
     {
         Set = 0x00,
@@ -59,6 +66,7 @@ namespace librazerblade
     {
         PktFan = 0x01,
         PktPower = 0x02,
+        PktBoost = 0x07,
         PktGetBrightness = 0x03,
         PktSetBrightness = 0x04,
         PktChromaApply = 0x0a,

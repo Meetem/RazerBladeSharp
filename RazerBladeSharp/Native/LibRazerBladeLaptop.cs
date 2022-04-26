@@ -72,13 +72,15 @@ namespace librazerblade
             }
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 280)]
+        [StructLayout(LayoutKind.Explicit, Size = 282)]
         public struct Proxy
         {
             public LaptopState Struct => this.ToStruct<LaptopState, Proxy>();
         }
 
         public byte fanSpeed;
+        public byte cpuBoost;
+        public byte gpuBoost;
         public byte powerMode;
         public byte manualFanSpeed;
         public KeyboardInfo keyboardInfo;

@@ -20,6 +20,11 @@
                 size).Struct;
         }
 
+        public static RazerPacket Boost(BladeBoostId id, byte value, BladePacketDirection direction = BladePacketDirection.Set)
+        {
+            return LibRazerBladeNative.librazerblade_PacketFactory_boost(id, value, direction).Struct;
+        }
+
         public static RazerPacket Fan(byte fanSpeedDiv100,
             int fanId, BladePacketDirection direction = BladePacketDirection.Set)
         {

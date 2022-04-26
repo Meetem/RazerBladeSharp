@@ -111,6 +111,10 @@ namespace librazerblade
             librazerblade_PacketFactory_brightness(byte brightness,
                 BladePacketDirection direction = BladePacketDirection.Set);
 
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern RazerPacket.Proxy
+            librazerblade_PacketFactory_boost(BladeBoostId id, byte value, BladePacketDirection direction = BladePacketDirection.Get);
+
         #endregion
 
         #region Packet Util
@@ -126,6 +130,9 @@ namespace librazerblade
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern byte librazerblade_PacketUtil_getManualFanSpeed(ref RazerPacket pkt);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern byte librazerblade_PacketUtil_getBoostValue(ref RazerPacket pkt);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern KeyboardRow librazerblade_PacketUtil_getRow(ref RazerPacket pkt);
@@ -177,6 +184,9 @@ namespace librazerblade
         public static extern UsbPacketResult librazerblade_Laptop_queryBrightness(LaptopPtr self, int numRetries = 0);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern UsbPacketResult librazerblade_Laptop_queryBoost(LaptopPtr self, int numRetries = 0);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern UsbPacketResult
             librazerblade_Laptop_queryChromaRow(LaptopPtr self, int rowId, int numRetries = 0);
 
@@ -198,6 +208,10 @@ namespace librazerblade
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
         public static extern UsbPacketResult librazerblade_Laptop_setBrightness(LaptopPtr self, byte brightness,
+            int numRetries = 0);
+
+        [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]
+        public static extern UsbPacketResult librazerblade_Laptop_setBoost(LaptopPtr self, BladeBoostId id, byte value,
             int numRetries = 0);
 
         [DllImport(LibraryPath, CallingConvention = CallType, CharSet = CharSet.Ansi)]

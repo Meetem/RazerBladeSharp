@@ -7,6 +7,11 @@
             return LibRazerBladeNative.librazerblade_PacketUtil_getFanValueRaw(ref pkt);
         }
 
+        public static byte GetBoostValue(ref RazerPacket pkt)
+        {
+            return LibRazerBladeNative.librazerblade_PacketUtil_getBoostValue(ref pkt);
+        }
+
         public static int GetFanValue(ref RazerPacket pkt)
         {
             return LibRazerBladeNative.librazerblade_PacketUtil_getFanValue(ref pkt);

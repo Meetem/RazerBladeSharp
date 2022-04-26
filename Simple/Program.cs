@@ -60,6 +60,8 @@ namespace RazerBladeSharp
             Console.WriteLine(
                 $"Got Status:" +
                 $"\n\tFanSpeed: {status.fanSpeed * 100}" +
+                $"\n\tCPU Boost Mode: {status.cpuBoost}" +
+                $"\n\tGPU Boost Mode: {status.gpuBoost}" +
                 $"\n\tPowerMode: {status.powerMode}" +
                 $"\n\tManualFanSpeed: {status.IsManualFanSpeed}" +
                 $"\n\tKeyboardBrightness: {status.keyboardInfo.brightness}");
@@ -76,6 +78,13 @@ namespace RazerBladeSharp
             UsbInterface.Initialize();
             AppDomain.CurrentDomain.ProcessExit += OnExit;
 
+            if (args[0].Trim().Equals("query", StringComparison.OrdinalIgnoreCase))
+            {
+                DiscoverLaptop();
+                QueryAndPrintDescription(true);
+                return;
+            }
+            
             var fanSpeed = FanSpeed.Parse(args[0]);
             int powerMode = ParsePowerMode(args.Length >= 2 ? args[1] : null);
             var fanSpeed2 = FanSpeed.Parse(args.Length >= 3 ? args[2] : null);
@@ -131,16 +140,8 @@ namespace RazerBladeSharp
                               $", Second Fan Speed {fanSpeed2}" +
                               $", KeyBrightness: {kbBrightness / percentToByte:0.00}%" +
                               $", Key Colors: ({cp[0]}, {cp[1]}, {cp[2]})");
-            
-            while (true)
-            {
-                _laptop = DetectLaptop();
-                if (_laptop != null)
-                    break;
 
-                Console.WriteLine($"Razer Blade Laptop not detected, retrying in {RetryInterval:0.00}s");
-                Thread.Sleep((int)TimeSpan.FromSeconds(RetryInterval).TotalMilliseconds);
-            }
+            DiscoverLaptop();
 
             if (_laptop == null)
                 return;
@@ -183,6 +184,19 @@ namespace RazerBladeSharp
             
             Console.WriteLine("Set. Exiting in 5 seconds");
             Thread.Sleep(5000);
+        }
+
+        private static void DiscoverLaptop()
+        {
+            while (true)
+            {
+                _laptop = DetectLaptop();
+                if (_laptop != null)
+                    break;
+
+                Console.WriteLine($"Razer Blade Laptop not detected, retrying in {RetryInterval:0.00}s");
+                Thread.Sleep((int)TimeSpan.FromSeconds(RetryInterval).TotalMilliseconds);
+            }
         }
 
         private static Laptop DetectLaptop()
