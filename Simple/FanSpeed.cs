@@ -32,7 +32,7 @@ namespace RazerBladeSharp
 
         public static FanSpeed Parse(string str)
         {
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str) || str.Equals("-", StringComparison.OrdinalIgnoreCase))
                 return FanSpeed.Empty;
 
             str = str.Trim();
@@ -67,7 +67,7 @@ namespace RazerBladeSharp
         
         public override string ToString()
         {
-            if (hasValue)
+            if (!hasValue)
                 return "Not Set";
             
             if (speed <= 0)

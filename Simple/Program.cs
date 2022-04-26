@@ -36,6 +36,34 @@ namespace RazerBladeSharp
             
             return 0;
         }
+
+        private static void QueryAndPrintDescription(bool printLaptop)
+        {
+            var desc = _laptop.GetDescription();
+            
+            if(printLaptop)
+                Console.WriteLine($"Found laptop {desc.name}, fan = {desc.fan}, capabilities = {desc.capabilities}");
+            
+            Console.WriteLine("Requesting status");
+
+            //Simple query of current state, will be written in internal Laptop* object
+            var result = _laptop.Query(BladeQuery.QueryAll, 2).GetResults(BladeQuery.QueryAll);
+            if (!result.IsAllSucceded())
+            {
+                Console.WriteLine($"Unable to request status, results:");
+                Console.WriteLine(string.Join("\n", result.GetNotSucceded().Select(x => $"{x.Key} = {x.Value}")));
+                return;
+            }
+
+            //Get LaptopState object from Laptop* where all the data is stored
+            var status = _laptop.GetState();
+            Console.WriteLine(
+                $"Got Status:" +
+                $"\n\tFanSpeed: {status.fanSpeed * 100}" +
+                $"\n\tPowerMode: {status.powerMode}" +
+                $"\n\tManualFanSpeed: {status.IsManualFanSpeed}" +
+                $"\n\tKeyboardBrightness: {status.keyboardInfo.brightness}");
+        }
         
         public static void Main(string[] args)
         {
@@ -70,7 +98,7 @@ namespace RazerBladeSharp
                     a = a.Substring(keyBright.Length);
                     if (int.TryParse(a, out var kbdb))
                     {
-                        kbBrightness = (byte)Math.Max(Math.Min((int)(kbBrightness * percentToByte), 255), 0);
+                        kbBrightness = (byte)Math.Max(Math.Min((int)(kbdb * percentToByte), 255), 0);
                         Console.WriteLine($"Parsed keyboard brightness {kbBrightness / percentToByte:0.00}%");
                     }
 
@@ -119,27 +147,7 @@ namespace RazerBladeSharp
 
             if (!disableGetDescription)
             {
-                var desc = _laptop.GetDescription();
-                Console.WriteLine($"Found laptop {desc.name}, fan = {desc.fan}, capabilities = {desc.capabilities}");
-                Console.WriteLine("Requesting status");
-
-                //Simple query of current state, will be written in internal Laptop* object
-                var result = _laptop.Query(BladeQuery.QueryAll, 999).GetResults(BladeQuery.QueryAll);
-                if (!result.IsAllSucceded())
-                {
-                    Console.WriteLine($"Unable to request status, results:");
-                    Console.WriteLine(string.Join("\n", result.GetNotSucceded().Select(x => $"{x.Key} = {x.Value}")));
-                    return;
-                }
-
-                //Get LaptopState object from Laptop* where all the data is stored
-                var status = _laptop.GetState();
-                Console.WriteLine(
-                    $"Got Status:\n\t" +
-                    $"FanSpeed: {status.fanSpeed * 100}" +
-                    $"\n\tPowerMode: {status.powerMode}" +
-                    $"\n\tManualFanSpeed: {status.IsManualFanSpeed}" +
-                    $"\n\tKeyboardBrightness: {status.keyboardInfo.brightness}");
+                QueryAndPrintDescription(true);
             }
             
             /*
@@ -165,6 +173,13 @@ namespace RazerBladeSharp
 
             //Apply sent colors
             _laptop.ApplyChroma();
+            
+            if (!disableGetDescription)
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Status after set:");
+                QueryAndPrintDescription(false);
+            }
             
             Console.WriteLine("Set. Exiting in 5 seconds");
             Thread.Sleep(5000);
